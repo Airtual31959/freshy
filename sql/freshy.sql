@@ -11,7 +11,7 @@
  Target Server Version : 80039
  File Encoding         : 65001
 
- Date: 24/01/2025 20:16:55
+ Date: 24/01/2025 21:25:56
 */
 
 SET NAMES utf8mb4;
@@ -130,6 +130,22 @@ CREATE TABLE `dormitories`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for files
+-- ----------------------------
+DROP TABLE IF EXISTS `files`;
+CREATE TABLE `files`  (
+  `file_id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '文件ID',
+  `file_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件名称',
+  `file_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件类型',
+  `file_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件内容',
+  `user_id` int UNSIGNED NOT NULL COMMENT '文件所属user_id',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文件创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `is_deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除标识',
+  PRIMARY KEY (`file_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
 -- Table structure for freshmen
 -- ----------------------------
 DROP TABLE IF EXISTS `freshmen`;
@@ -142,6 +158,22 @@ CREATE TABLE `freshmen`  (
   INDEX `freshman_id`(`freshman_id` ASC) USING BTREE,
   CONSTRAINT `freshmen_ibfk_1` FOREIGN KEY (`freshman_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for logs
+-- ----------------------------
+DROP TABLE IF EXISTS `logs`;
+CREATE TABLE `logs`  (
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '日志ID',
+  `log_level` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '日志等级',
+  `log_action` enum('M','F','NA') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '日志行为',
+  `log_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '日志信息',
+  `user_id` int UNSIGNED NULL DEFAULT NULL COMMENT '日志所属user_id（如果有）',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '日志创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `is_deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除标识',
+  PRIMARY KEY (`log_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for major_user
